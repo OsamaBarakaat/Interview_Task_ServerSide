@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 function validateAge(age) {
-    if (age < 21) {
+    if (age < 20) {
         throw new Error("age is not big enough");
     }
 }
@@ -38,7 +38,7 @@ router.get('/:id', async (req, res) => {
 // get all users
 router.get('/', async (req, res) => {
     try {
-        let users = await getAllUsers()
+        let users = await getAllUsers(req)
         res.status(201).json(users)
     }
     catch (err) {
@@ -51,13 +51,13 @@ router.put('/:id', async (req, res) => {
     let { id } = req.params
     let { userName, age, address } = req.body
     try {
+        validateAge(age)
         let updatedUser = await updateUser(id, userName, age, address)
         res.status(200).json(`Updated Successfully ${updatedUser}`)
     }
     catch (err) {
         res.status(404).json({ message: err.message })
     }
-
 })
 
 // delete user 

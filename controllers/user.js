@@ -1,8 +1,18 @@
 const userModel = require('../models/user')
 
 // get all users
-function getAllUsers() {
-    return userModel.find().populate('address')
+async function getAllUsers(req) {
+    let page = req.query.page || 1
+    let count = await userModel.countDocuments()
+    const limit = 2
+    const pageNumbers = count / limit
+    // console.log("aaaaaaaaaaa", count);
+    const data = {
+        pageNumbers: pageNumbers,
+        data: await userModel.find().skip((page - 1) * 2).limit(limit).populate('address')
+    }
+    return data
+
 }
 
 // get one user by id 

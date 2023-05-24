@@ -10,4 +10,9 @@ function getAllAddresses() {
     return addressModel.find()
 }
 
-module.exports = { addAddress, getAllAddresses }
+// update address
+function updateAddress(id, descreption) {
+    return addressModel.findByIdAndUpdate({ _id: id }, { descreption: descreption })
+}
+
+module.exports = { addAddress, getAllAddresses, updateAddress }
